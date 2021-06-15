@@ -86,7 +86,7 @@ const handleSuspenseFetch = <Response, Args extends any[]>({
 }
 
 /**
- * 虽然叫 use-xx 但是病没有使用任何 hook
+ * 虽然叫 use-xx 但是没有使用任何 hook
  * @param fn
  * @param args
  * @returns
@@ -94,11 +94,11 @@ const handleSuspenseFetch = <Response, Args extends any[]>({
 export default function suspenseFetch<
   Response = any,
   Args extends any[] = any[]
->(fn: PromiseFn<Response, Args>, ...args: Args): Response {
+>(fn: PromiseFn<Response, Args>, ...args: any[]): Response {
   return handleSuspenseFetch({
     promiseFn: fn,
     cache: globalCache as any,
-    args,
+    args: args as Args,
     lifeSpan: suspenseFetch.lifeSpan
   }) as Response
 }

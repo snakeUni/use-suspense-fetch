@@ -1,0 +1,23 @@
+{
+  "name": "basic-fetch",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "alias": {
+    "react": "./node_modules/react",
+    "react-dom": "./node_modules/react-dom"
+  },
+  "dependencies": {
+    "@types/react": "^17.0.11",
+    "@types/react-dom": "^17.0.7",
+    "parcel": "^2.0.0-beta.2",
+    "react": "^18.0.0-alpha-dbe3363cc",
+    "react-dom": "^18.0.0-alpha-dbe3363cc",
+    "typescript": "^4.3.2",
+    "use-asset": "^1.0.4"
+  }
+}
