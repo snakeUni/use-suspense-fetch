@@ -107,7 +107,7 @@ export default function suspenseFetch<
 suspenseFetch.lifeSpan = 0
 
 // 导出去的其他方法，用于全局的缓存
-export function clear<Args extends any[] = any>(...args: Args) {
+export function refresh<Args extends any[] = any>(...args: Args) {
   return clearInner(globalCache, ...args)
 }
 
@@ -132,7 +132,7 @@ export function peek<Response = any, Args extends any[] = any>(
 
 interface ReturnMethod<Response = any, Args extends any[] = any[]> {
   preload: (fn: PromiseFn<Response, Args>, ...args: Args) => void
-  clear: (...args: Args) => void
+  refresh: (...args: Args) => void
   peek: (...args: Args) => void | Response
   fetch: (fn: PromiseFn<Response, Args>, ...args: Args) => Response
 }
@@ -179,7 +179,7 @@ export function createSuspenseFetch<Response = any, Args extends any[] = any[]>(
         preload: true,
         lifeSpan
       }),
-    clear: (...args: Args) => clearInner(cache, ...args),
+    refresh: (...args: Args) => clearInner(cache, ...args),
     peek: (...args: Args) => {
       return cache.get(args)?.response
     }

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import fetchSuspense, { clear } from '../../src/index'
+import fetchSuspense, { refresh } from '../../src/index'
 
 function Picker({ value, onChange, options }) {
   return (
@@ -30,7 +30,7 @@ function BasicFetch() {
       <button
         onClick={() => {
           startRefreshing(() => {
-            clear()
+            refresh()
           })
         }}
       >
