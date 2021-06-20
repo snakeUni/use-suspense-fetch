@@ -1,8 +1,7 @@
 import LRU, { Options } from 'lru-cache'
-import deepEqual from 'fast-deep-equal'
 
 type Cache<Response = any, Args extends any[] = any[]> = LRU<
-  any,
+  string,
   PromiseCache<Response, Args>
 >
 
@@ -40,17 +39,15 @@ const handleSuspenseFetch = <Response, Args extends any[]>({
   preload = false,
   lifeSpan = 0
 }: HandleSuspenseFetch<Response, Args>) => {
-  const keys = cache.keys()
+  // 使用 str
+  const argsStr = JSON.stringify(args)
+  const cachedValue = cache.get(argsStr)
 
-  for (const key of keys) {
-    const cacheValue = cache.get(key)
-
-    if (deepEqual(args, cacheValue?.args)) {
-      if (preload) return
-      if (cacheValue?.error) throw cacheValue.error
-      if (cacheValue?.response) return cacheValue.response
-      throw cacheValue?.promise
-    }
+  if (cachedValue) {
+    if (preload) return
+    if (cachedValue?.error) throw cachedValue.error
+    if (cachedValue?.response) return cachedValue.response
+    throw cachedValue?.promise
   }
 
   const cacheValue: PromiseCache<Response, Args> = {
@@ -73,15 +70,15 @@ const handleSuspenseFetch = <Response, Args extends any[]>({
       .then(() => {
         if (lifeSpan > 0) {
           setTimeout(() => {
-            if (cache.has(args)) {
-              cache.del(args)
+            if (cache.has(argsStr)) {
+              cache.del(argsStr)
             }
           }, lifeSpan)
         }
       })
   }
 
-  cache.set(args, cacheValue)
+  cache.set(argsStr, cacheValue)
   if (!preload) throw cacheValue.promise
 }
 
@@ -127,7 +124,8 @@ export function preload<Response = any, Args extends any[] = any>(
 export function peek<Response = any, Args extends any[] = any>(
   ...args: Args
 ): undefined | Response {
-  return globalCache.get(args)?.response
+  const argsStr = JSON.stringify(args)
+  return globalCache.get(argsStr)?.response
 }
 
 interface ReturnMethod<Response = any, Args extends any[] = any[]> {
@@ -144,8 +142,9 @@ function clearInner<Response, Args extends any[]>(
   // 如果不传递第二个参数，则清空所有的缓存
   if (args === undefined || args.length === 0) cache.reset()
   else {
-    if (cache.has(args)) {
-      cache.del(args)
+    const argsStr = JSON.stringify(args)
+    if (cache.has(argsStr)) {
+      cache.del(argsStr)
     }
   }
 }
@@ -181,7 +180,8 @@ export function createSuspenseFetch<Response = any, Args extends any[] = any[]>(
       }),
     refresh: (...args: Args) => clearInner(cache, ...args),
     peek: (...args: Args) => {
-      return cache.get(args)?.response
+      const argsStr = JSON.stringify(args)
+      return cache.get(argsStr)?.response
     }
   }
 }
