@@ -17,6 +17,9 @@ const Comments = lazy(() => import('./Comments' /* webpackPrefetch: true */))
 const Sidebar = lazy(() => import('./Sidebar' /* webpackPrefetch: true */))
 const Post = lazy(() => import('./Post' /* webpackPrefetch: true */))
 const Comments2 = lazy(() => import('./Comments2' /* webpackPrefetch: true */))
+const CommentsWithReactFetch = lazy(() =>
+  import('./Comments3' /* webpackPrefetch: true */)
+)
 
 export default function App({ assets }) {
   return (
@@ -53,6 +56,12 @@ function Content() {
           <h2>Comments for suspense fetch</h2>
           <Suspense fallback={<Spinner />}>
             <Comments2 subreddit="react" />
+          </Suspense>
+        </section>
+        <section className="comments">
+          <h2>Comments for react fetch</h2>
+          <Suspense fallback={<Spinner />}>
+            <CommentsWithReactFetch />
           </Suspense>
         </section>
         <h2>Thanks for reading!</h2>

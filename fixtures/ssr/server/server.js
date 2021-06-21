@@ -24,6 +24,7 @@ const { JS_BUNDLE_DELAY } = require('./delays')
 
 const PORT = process.env.PORT || 4000
 const app = express()
+const { mockReact } = require('./mockData')
 
 app.use((req, res, next) => {
   if (req.url.endsWith('.js')) {
@@ -43,6 +44,14 @@ app.get(
     render(req.url, res)
   })
 )
+
+// 创建一个内部使用的接口，返回数据
+app.use('/react.json', (req, res) => {
+  res.statusCode = 200
+  res.setHeader('Content-type', 'application/json')
+  res.send(mockReact)
+})
+
 app.use(express.static('build'))
 app.use(express.static('public'))
 
