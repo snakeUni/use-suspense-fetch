@@ -1,0 +1,1 @@
+fork from https://github.com/facebook/react/blob/master/fixtures/ssr2/package.json

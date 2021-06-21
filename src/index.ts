@@ -103,7 +103,11 @@ export default function suspenseFetch<
 // 设置 lifeSpan
 suspenseFetch.lifeSpan = 0
 
-// 导出去的其他方法，用于全局的缓存
+// 设置 ssr, 可以修改此设置，达到 ssr 渲染的目的, 在 ssr 的场景下，服务端应该每次都重新请求
+// 在客户端应该直接跳过
+suspenseFetch.ssr = false
+
+// 导出去的其他方法，用于全局的缓存, 但是如果是 ssr, 那么在客户端调用 refresh 是没有作用的
 export function refresh<Args extends any[] = any>(...args: Args) {
   return clearInner(globalCache, ...args)
 }
