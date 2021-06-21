@@ -10,7 +10,8 @@
     "src"
   ],
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "start": "tsc --watch"
   },
   "devDependencies": {
     "@types/lru-cache": "^5.1.0",

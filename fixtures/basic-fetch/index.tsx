@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import fetchSuspense, { refresh } from '../../src/index'
+import fetchSuspense, { refresh, peek } from '../../src/index'
 
 function Picker({ value, onChange, options }) {
   return (
@@ -46,6 +46,7 @@ function BasicFetch() {
 }
 
 function Post({ subreddit }: any) {
+  console.log(`peek ${subreddit}:`, peek(subreddit))
   const response = fetchSuspense(
     () =>
       fetch(`https://www.reddit.com/r/${subreddit}.json`).then(res =>
