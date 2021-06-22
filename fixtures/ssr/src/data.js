@@ -36,3 +36,8 @@ export function useData() {
   }
   return fakeData
 }
+
+export function useCtx() {
+  const ctx = useContext(DataContext)
+  return ctx
+}

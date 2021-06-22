@@ -47,12 +47,8 @@ function BasicFetch() {
 
 function Post({ subreddit }: any) {
   console.log(`peek ${subreddit}:`, peek(subreddit))
-  const response = fetchSuspense(
-    () =>
-      fetch(`https://www.reddit.com/r/${subreddit}.json`).then(res =>
-        res.json()
-      ),
-    subreddit
+  const response = fetchSuspense(subreddit, () =>
+    fetch(`https://www.reddit.com/r/${subreddit}.json`).then(res => res.json())
   )
   const post = response.data.children.map(child => child.data)
   console.log('post:', subreddit)

@@ -1,13 +1,8 @@
 import LRU, { Options } from 'lru-cache'
 
-type Cache<Response = any, Args extends any[] = any[]> = LRU<
-  string,
-  PromiseCache<Response, Args>
->
+type Cache<Response = any> = LRU<string, PromiseCache<Response>>
 
-type PromiseFn<Response, Args extends any[]> = (
-  ...args: Args
-) => Promise<Response>
+type PromiseFn<Response> = () => Promise<Response>
 
 const defaultOption: Options<any, any> = {
   max: 500,
@@ -17,31 +12,37 @@ const defaultOption: Options<any, any> = {
 
 const globalCache: Cache = new LRU(defaultOption)
 
-interface PromiseCache<Response = any, Args = any[]> {
+interface PromiseCache<Response = any> {
   promise: Promise<void>
   response?: Response
   error?: any
-  args: Args
+  key: string
 }
 
-interface HandleSuspenseFetch<Response, Args extends any[]> {
-  promiseFn: PromiseFn<Response, Args>
-  cache: Cache<Response, Args>
-  args: Args
+interface HandleSuspenseFetch<Response> {
+  promiseFn: PromiseFn<Response>
+  cache: Cache<Response>
+  key: string
   preload?: boolean
   lifeSpan?: number
+  ssr?: boolean
 }
 
-const handleSuspenseFetch = <Response, Args extends any[]>({
+const handleSuspenseFetch = <Response>({
   promiseFn,
   cache,
-  args,
+  key,
   preload = false,
-  lifeSpan = 0
-}: HandleSuspenseFetch<Response, Args>) => {
+  lifeSpan = 0,
+  ssr = false
+}: HandleSuspenseFetch<Response>) => {
+  if (ssr) {
+    // 如果是在 ssr，则每次都清除缓存, 但是抛出后，这里还会在走一次，所以这里会引起 Bug
+    // 所以应该直接抛出 promise
+    refresh(key)
+  }
   // 使用 str
-  const argsStr = JSON.stringify(args)
-  const cachedValue = cache.get(argsStr)
+  const cachedValue = cache.get(key)
 
   if (cachedValue) {
     if (preload) return
@@ -50,9 +51,9 @@ const handleSuspenseFetch = <Response, Args extends any[]>({
     throw cachedValue?.promise
   }
 
-  const cacheValue: PromiseCache<Response, Args> = {
-    args,
-    promise: promiseFn(...args)
+  const cacheValue: PromiseCache<Response> = {
+    key,
+    promise: promiseFn()
       .then(res => {
         if (res) {
           cacheValue.response = res
@@ -70,16 +71,21 @@ const handleSuspenseFetch = <Response, Args extends any[]>({
       .then(() => {
         if (lifeSpan > 0) {
           setTimeout(() => {
-            if (cache.has(argsStr)) {
-              cache.del(argsStr)
+            if (cache.has(key)) {
+              cache.del(key)
             }
           }, lifeSpan)
         }
       })
   }
 
-  cache.set(argsStr, cacheValue)
+  cache.set(key, cacheValue)
   if (!preload) throw cacheValue.promise
+}
+
+interface FetchOptions {
+  lifeSpan?: number
+  ssr?: boolean
 }
 
 /**
@@ -88,15 +94,17 @@ const handleSuspenseFetch = <Response, Args extends any[]>({
  * @param args
  * @returns
  */
-export default function suspenseFetch<
-  Response = any,
-  Args extends any[] = any[]
->(fn: PromiseFn<Response, Args>, ...args: any[]): Response {
+export default function suspenseFetch<Response = any>(
+  key: string,
+  fn: PromiseFn<Response>,
+  option: FetchOptions = { ssr: false }
+): Response {
   return handleSuspenseFetch({
     promiseFn: fn,
     cache: globalCache as any,
-    args: args as Args,
-    lifeSpan: suspenseFetch.lifeSpan
+    key: key,
+    lifeSpan: option.lifeSpan || suspenseFetch.lifeSpan,
+    ssr: option.ssr || suspenseFetch.ssr
   }) as Response
 }
 
@@ -108,47 +116,37 @@ suspenseFetch.lifeSpan = 0
 suspenseFetch.ssr = false
 
 // 导出去的其他方法，用于全局的缓存, 但是如果是 ssr, 那么在客户端调用 refresh 是没有作用的
-export function refresh<Args extends any[] = any>(...args: Args) {
-  return clearInner(globalCache, ...args)
+export function refresh(key?: string) {
+  return clearInner(globalCache, key)
 }
 
-export function preload<Response = any, Args extends any[] = any>(
-  fn: PromiseFn<Response, Args>,
-  ...args: Args
-) {
+export function preload<Response = any>(key: string, fn: PromiseFn<Response>) {
   handleSuspenseFetch({
     promiseFn: fn,
     cache: globalCache as any,
-    args,
+    key,
     preload: true,
     lifeSpan: suspenseFetch.lifeSpan
   })
 }
 
-export function peek<Response = any, Args extends any[] = any>(
-  ...args: Args
-): undefined | Response {
-  const argsStr = JSON.stringify(args)
-  return globalCache.get(argsStr)?.response
+export function peek<Response = any>(key: string): undefined | Response {
+  return globalCache.get(key)?.response
 }
 
-interface ReturnMethod<Response = any, Args extends any[] = any[]> {
-  preload: (fn: PromiseFn<Response, Args>, ...args: Args) => void
-  refresh: (...args: Args) => void
-  peek: (...args: Args) => void | Response
-  fetch: (fn: PromiseFn<Response, Args>, ...args: Args) => Response
+interface ReturnMethod<Response = any> {
+  preload: (key: string, fn: PromiseFn<Response>) => void
+  refresh: (key: string) => void
+  peek: (key: string) => void | Response
+  fetch: (key: string, fn: PromiseFn<Response>) => Response
 }
 
-function clearInner<Response, Args extends any[]>(
-  cache: Cache<Response, Args>,
-  ...args: Args
-) {
+function clearInner<Response>(cache: Cache<Response>, key?: string) {
   // 如果不传递第二个参数，则清空所有的缓存
-  if (args === undefined || args.length === 0) cache.reset()
+  if (key === undefined) cache.reset()
   else {
-    const argsStr = JSON.stringify(args)
-    if (cache.has(argsStr)) {
-      cache.del(argsStr)
+    if (cache.has(key)) {
+      cache.del(key)
     }
   }
 }
@@ -159,33 +157,32 @@ function clearInner<Response, Args extends any[]>(
  * @param option 配置选项
  * @returns
  */
-export function createSuspenseFetch<Response = any, Args extends any[] = any[]>(
+export function createSuspenseFetch<Response = any>(
   lifeSpan = 0,
   option: Options<any, any> = {}
-): ReturnMethod<Response, Args> {
+): ReturnMethod<Response> {
   const innerOption = { ...defaultOption, ...option }
   const cache: any = new LRU(innerOption)
 
   return {
-    fetch: (fn: PromiseFn<Response, Args>, ...args: Args) =>
+    fetch: (key: string, fn: PromiseFn<Response>) =>
       handleSuspenseFetch({
         promiseFn: fn,
         cache: cache as any,
-        args,
+        key,
         lifeSpan: lifeSpan
       }) as Response,
-    preload: (fn: PromiseFn<Response, Args>, ...args: Args) =>
+    preload: (key: string, fn: PromiseFn<Response>) =>
       void handleSuspenseFetch({
         promiseFn: fn,
         cache,
-        args,
+        key,
         preload: true,
         lifeSpan
       }),
-    refresh: (...args: Args) => clearInner(cache, ...args),
-    peek: (...args: Args) => {
-      const argsStr = JSON.stringify(args)
-      return cache.get(argsStr)?.response
+    refresh: (key?: string) => clearInner(cache, key),
+    peek: (key: string) => {
+      return cache.get(key)?.response
     }
   }
 }

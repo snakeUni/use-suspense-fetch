@@ -1,4 +1,5 @@
 import suspenseFetch, { peek } from '../../../lib'
+import { useCtx } from './data'
 
 const API_DELAY = 2000
 const fakeData = [
@@ -8,16 +9,20 @@ const fakeData = [
 ]
 
 export default function Comments2({ subreddit }) {
+  const ctx = useCtx()
   console.log('peek:', peek(subreddit))
   // 会缓存，因为应该记得清楚缓存
   const response = suspenseFetch(
+    subreddit,
     () =>
       new Promise(resolve =>
         setTimeout(() => {
           resolve(fakeData)
         }, API_DELAY)
       ),
-    subreddit
+    {
+      ssr: ctx ? true : false
+    }
   )
 
   console.log('post:', response)
