@@ -30,10 +30,12 @@ const fakeData = [
 export function useData() {
   const ctx = useContext(DataContext)
   if (ctx !== null) {
+    console.log('render suspense first throw')
     // This context is only provided on the server.
     // It is here to simulate a suspending data fetch.
     ctx.read()
   }
+  console.log('render suspense second ----')
   return fakeData
 }
 
