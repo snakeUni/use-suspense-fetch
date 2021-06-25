@@ -2483,7 +2483,7 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-fast-deep-equal@^3.1.1:
+fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
   resolved "https://registry.npm.taobao.org/fast-deep-equal/download/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
   integrity sha1-On1WtVnWy8PrUSMlJE5hmmXGxSU=
@@ -3323,6 +3323,13 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
+lru-cache@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.nlark.com/lru-cache/download/lru-cache-6.0.0.tgz#6d6fe6570ebd96aaf90fcad1dafa3b2566db3a94"
+  integrity sha1-bW/mVw69lqr5D8rR2vo7JWbbOpQ=
+  dependencies:
+    yallist "^4.0.0"
+
 make-dir@^2.0.0, make-dir@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npm.taobao.org/make-dir/download/make-dir-2.1.0.tgz#5f0310e18b8be898cc07009295a30ae41e91e6f5"
@@ -4114,7 +4121,7 @@ react-fetch@0.0.0-experimental-44cdfd6b7:
 
 react@18.0.0-alpha-7ec4c5597:
   version "18.0.0-alpha-7ec4c5597"
-  resolved "https://registry.nlark.com/react/download/react-18.0.0-alpha-7ec4c5597.tgz#dd57901c736fd691c5456ec7aa69177cf2ce4ef5"
+  resolved "https://registry.nlark.com/react/download/react-18.0.0-alpha-7ec4c5597.tgz?cache=0&sync_timestamp=1624551785731&other_urls=https%3A%2F%2Fregistry.nlark.com%2Freact%2Fdownload%2Freact-18.0.0-alpha-7ec4c5597.tgz#dd57901c736fd691c5456ec7aa69177cf2ce4ef5"
   integrity sha1-3VeQHHNv1pHFRW7HqmkXfPLOTvU=
   dependencies:
     loose-envify "^1.1.0"
@@ -4378,7 +4385,7 @@ safe-regex@^1.1.0:
 
 scheduler@0.21.0-alpha-7ec4c5597:
   version "0.21.0-alpha-7ec4c5597"
-  resolved "https://registry.nlark.com/scheduler/download/scheduler-0.21.0-alpha-7ec4c5597.tgz?cache=0&sync_timestamp=1624033591112&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fscheduler%2Fdownload%2Fscheduler-0.21.0-alpha-7ec4c5597.tgz#4bfbf5d8fbfcf3ddb7b7741d64175e3501f6fa59"
+  resolved "https://registry.nlark.com/scheduler/download/scheduler-0.21.0-alpha-7ec4c5597.tgz#4bfbf5d8fbfcf3ddb7b7741d64175e3501f6fa59"
   integrity sha1-S/v12Pv88923t3QdZBdeNQH2+lk=
   dependencies:
     loose-envify "^1.1.0"
@@ -5026,6 +5033,12 @@ url@^0.11.0:
     punycode "1.3.2"
     querystring "0.2.0"
 
+"use-suspense-fetch@file:.yalc/use-suspense-fetch":
+  version "1.1.1-82bd1120"
+  dependencies:
+    fast-deep-equal "^3.1.3"
+    lru-cache "^6.0.0"
+
 use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.npm.taobao.org/use/download/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
@@ -5234,6 +5247,11 @@ yallist@^3.0.2:
   version "3.1.1"
   resolved "https://registry.npm.taobao.org/yallist/download/yallist-3.1.1.tgz#dbb7daf9bfd8bac9ab45ebf602b8cbad0d5d08fd"
   integrity sha1-27fa+b/YusmrRev2ArjLrQ1dCP0=
+
+yallist@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npm.taobao.org/yallist/download/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
+  integrity sha1-m7knkNnA7/7GO+c1GeEaNQGaOnI=
 
 yaml@^1.7.2:
   version "1.10.2"

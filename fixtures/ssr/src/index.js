@@ -8,5 +8,11 @@
 
 import { hydrateRoot } from 'react-dom'
 import App from './App'
+import { SuspenseFetchProvider } from 'use-suspense-fetch'
 
-hydrateRoot(document, <App assets={window.assetManifest} />)
+hydrateRoot(
+  document,
+  <SuspenseFetchProvider>
+    <App assets={window.assetManifest} />
+  </SuspenseFetchProvider>
+)

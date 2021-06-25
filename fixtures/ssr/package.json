@@ -17,10 +17,11 @@
     "nodemon": "^2.0.6",
     "react": "18.0.0-alpha-7ec4c5597",
     "react-dom": "18.0.0-alpha-7ec4c5597",
-    "react-fetch": "0.0.0-experimental-44cdfd6b7",
     "react-error-boundary": "^3.1.3",
+    "react-fetch": "0.0.0-experimental-44cdfd6b7",
     "resolve": "1.12.0",
     "rimraf": "^3.0.2",
+    "use-suspense-fetch": "file:.yalc/use-suspense-fetch",
     "webpack": "4.44.2",
     "webpack-cli": "^4.2.0"
   },

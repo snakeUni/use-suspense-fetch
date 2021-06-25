@@ -17,9 +17,10 @@ const Comments = lazy(() => import('./Comments' /* webpackPrefetch: true */))
 const Sidebar = lazy(() => import('./Sidebar' /* webpackPrefetch: true */))
 const Post = lazy(() => import('./Post' /* webpackPrefetch: true */))
 const Comments2 = lazy(() => import('./Comments2' /* webpackPrefetch: true */))
-const CommentsWithReactFetch = lazy(() =>
-  import('./Comments3' /* webpackPrefetch: true */)
-)
+// 目前不存在哪一个分支即包含 fetch 也包含 ssr
+// const CommentsWithReactFetch = lazy(() =>
+//   import('./Comments3' /* webpackPrefetch: true */)
+// )
 
 export default function App({ assets }) {
   return (
@@ -58,12 +59,12 @@ function Content() {
             <Comments2 subreddit="react" />
           </Suspense>
         </section>
-        <section className="comments">
+        {/* <section className="comments">
           <h2>Comments for react fetch</h2>
           <Suspense fallback={<Spinner />}>
             <CommentsWithReactFetch />
           </Suspense>
-        </section>
+        </section> */}
         <h2>Thanks for reading!</h2>
       </article>
     </Layout>

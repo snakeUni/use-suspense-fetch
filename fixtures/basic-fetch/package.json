@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf .parcel-cache",
-    "start": "yarn clean parcel index.html",
+    "start": "yarn clean && parcel index.html",
     "build": "parcel build index.html"
   },
   "alias": {
