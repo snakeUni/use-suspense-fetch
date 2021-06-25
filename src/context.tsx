@@ -33,7 +33,7 @@ export function useFetch<Response = any>(
   key: string,
   fn: PromiseFn<Response>
 ): Response {
-  const { fetch } = useSuspenseFetch()
+  const { fetch } = useSuspenseFetch<Response>()
 
   return fetch(key, fn)
 }

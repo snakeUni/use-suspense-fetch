@@ -3,4 +3,5 @@ lib
 dist
 .parcel-cache
 build
+.yalc
 # use-asset
