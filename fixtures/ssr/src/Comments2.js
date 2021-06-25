@@ -8,7 +8,6 @@ const fakeData = [
 ]
 
 export default function Comments2({ subreddit }) {
-  // 会缓存，因为应该记得清楚缓存
   const response = useFetch(
     subreddit,
     () =>
@@ -18,18 +17,6 @@ export default function Comments2({ subreddit }) {
         }, API_DELAY)
       )
   )
-  // const response = suspenseFetch(
-  //   subreddit,
-  //   () =>
-  //     new Promise(resolve =>
-  //       setTimeout(() => {
-  //         resolve(fakeData)
-  //       }, API_DELAY)
-  //     ),
-  //   {
-  //     ssr: ctx ? true : false
-  //   }
-  // )
 
   console.log('post:', response)
   return (
