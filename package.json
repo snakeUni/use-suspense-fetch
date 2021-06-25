@@ -1,6 +1,6 @@
 {
   "name": "use-suspense-fetch",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "main": "lib/index.js",
   "repository": "https://github.com/snakeUni/use-suspense-fetch.git",
   "author": "fox <1025687605@qq.com>",
