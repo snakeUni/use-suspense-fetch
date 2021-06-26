@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import fetchSuspense, { refresh, peek } from '../../src/index'
+import fetchSuspense, { refresh, peek } from 'use-suspense-fetch'
 
 function Picker({ value, onChange, options }) {
   return (
