@@ -9,4 +9,11 @@ export default suspenseFetch
 export { refresh, peek, preload, createSuspenseFetch }
 
 // context
-export { SuspenseFetchProvider, useSuspenseFetch, useFetch } from './context'
+export {
+  SuspenseFetchProvider,
+  useSuspenseFetch,
+  useFetch,
+  renderScriptHtml,
+  REACT_USE_SUSPENSE_DATA,
+  getServerInitialData
+} from './context'

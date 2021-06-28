@@ -34,6 +34,16 @@ export default function App({ assets }) {
   )
 }
 
+export function AppServer({ assets }) {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <ErrorBoundary FallbackComponent={Error}>
+        <Content />
+      </ErrorBoundary>
+    </Suspense>
+  )
+}
+
 function Content() {
   return (
     <Layout>

@@ -1,4 +1,4 @@
-import { useFetch } from 'use-suspense-fetch'
+import { useFetch, useSuspenseFetch } from 'use-suspense-fetch'
 
 const API_DELAY = 2000
 const fakeData = [
@@ -8,6 +8,8 @@ const fakeData = [
 ]
 
 export default function Comments2({ subreddit }) {
+  const { peek } = useSuspenseFetch()
+  console.log('-- peek react --', peek(subreddit))
   const response = useFetch(
     subreddit,
     () =>

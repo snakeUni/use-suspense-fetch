@@ -35,7 +35,7 @@ export function useData() {
     // It is here to simulate a suspending data fetch.
     ctx.read()
   }
-  console.log('render suspense second ----')
+
   return fakeData
 }
 

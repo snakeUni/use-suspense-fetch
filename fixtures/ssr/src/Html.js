@@ -33,3 +33,26 @@ export default function Html({ assets, children, title }) {
     </html>
   )
 }
+
+export function Header({ title, assets }) {
+  return (
+    <head>
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="shortcut icon" href="favicon.ico" />
+      <link rel="stylesheet" href={assets['main.css']} />
+      <title>{title}</title>
+    </head>
+  )
+}
+
+export const beforeContent =
+  '<body><noscript><b>Enable JavaScript to run this app.</b></noscript>'
+
+export const renderAfterContent = assets => {
+  return `<script>assetManifest = ${JSON.stringify(
+    assets
+  )};}</script><script async src={assets['main.js']}/>`
+}
+
+export const bodyEnd = `</body></html>`

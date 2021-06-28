@@ -26,6 +26,11 @@
   resolved "https://registry.nlark.com/@types/scheduler/download/@types/scheduler-0.16.1.tgz?cache=0&sync_timestamp=1621242704081&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fscheduler%2Fdownload%2F%40types%2Fscheduler-0.16.1.tgz#18845205e86ff0038517aab7a18a62a6b9f71275"
   integrity sha1-GIRSBehv8AOFF6q3oYpiprn3EnU=
 
+"@types/serialize-javascript@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.nlark.com/@types/serialize-javascript/download/@types/serialize-javascript-5.0.0.tgz?cache=0&sync_timestamp=1621242648265&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fserialize-javascript%2Fdownload%2F%40types%2Fserialize-javascript-5.0.0.tgz#127638567bd9f11251ad0ca2d9d9ea9ce5ca4b93"
+  integrity sha1-EnY4VnvZ8RJRrQyi2dnqnOXKS5M=
+
 ansi-regex@^5.0.0:
   version "5.0.0"
   resolved "https://registry.nlark.com/ansi-regex/download/ansi-regex-5.0.0.tgz#388539f55179bf39339c81af30a654d69f87cb75"
@@ -258,6 +263,13 @@ path-is-absolute@^1.0.0:
   resolved "https://registry.nlark.com/path-is-absolute/download/path-is-absolute-1.0.1.tgz#174b9268735534ffbc7ace6bf53a5a9e1b5c5f5f"
   integrity sha1-F0uSaHNVNP+8es5r9TpanhtcX18=
 
+randombytes@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.npm.taobao.org/randombytes/download/randombytes-2.1.0.tgz#df6f84372f0270dc65cdf6291349ab7a473d4f2a"
+  integrity sha1-32+ENy8CcNxlzfYpE0mrekc9Tyo=
+  dependencies:
+    safe-buffer "^5.1.0"
+
 react-dom@18.0.0-alpha-dbe3363cc:
   version "18.0.0-alpha-dbe3363cc"
   resolved "https://registry.nlark.com/react-dom/download/react-dom-18.0.0-alpha-dbe3363cc.tgz#479f272e9524e653abaaf65a36045e1a135b07a3"
@@ -280,6 +292,11 @@ require-directory@^2.1.1:
   resolved "https://registry.npm.taobao.org/require-directory/download/require-directory-2.1.1.tgz#8c64ad5fd30dab1c976e2344ffe7f792a6a6df42"
   integrity sha1-jGStX9MNqxyXbiNE/+f3kqam30I=
 
+safe-buffer@^5.1.0:
+  version "5.2.1"
+  resolved "https://registry.nlark.com/safe-buffer/download/safe-buffer-5.2.1.tgz#1eaf9fa9bdb1fdd4ec75f58f9cdb4e6b7827eec6"
+  integrity sha1-Hq+fqb2x/dTsdfWPnNtOa3gn7sY=
+
 scheduler@0.21.0-alpha-dbe3363cc:
   version "0.21.0-alpha-dbe3363cc"
   resolved "https://registry.nlark.com/scheduler/download/scheduler-0.21.0-alpha-dbe3363cc.tgz#d8bd8866b7a7e51983269a8c1925d15352e40e2d"
@@ -287,6 +304,13 @@ scheduler@0.21.0-alpha-dbe3363cc:
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
+
+serialize-javascript@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.nlark.com/serialize-javascript/download/serialize-javascript-6.0.0.tgz#efae5d88f45d7924141da8b5c3a7a7e663fefeb8"
+  integrity sha1-765diPRdeSQUHai1w6en5mP+/rg=
+  dependencies:
+    randombytes "^2.1.0"
 
 string-width@^4.1.0, string-width@^4.2.0:
   version "4.2.2"

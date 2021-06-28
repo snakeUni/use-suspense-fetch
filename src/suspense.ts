@@ -1,6 +1,7 @@
 import LRU, { Options } from 'lru-cache'
+import { isBrowser } from './utils'
 
-type Cache<Response = any> = LRU<string, PromiseCache<Response>>
+export type Cache<Response = any> = LRU<string, PromiseCache<Response>>
 
 export type PromiseFn<Response> = () => Promise<Response>
 
@@ -11,6 +12,7 @@ const defaultOption: Options<any, any> = {
 }
 
 const globalCache: Cache = new LRU(defaultOption)
+const browser = isBrowser()
 
 interface PromiseCache<Response = any> {
   promise: Promise<void>
@@ -134,6 +136,10 @@ export interface ReturnMethod<Response = any> {
   refresh: (key: string) => void
   peek: (key: string) => void | Response
   fetch: (key: string, fn: PromiseFn<Response>) => Response
+  /**
+   * 用于获取缓存，方便在 ssr 的时候使用
+   */
+  getCache: () => Cache<Response>
 }
 
 function clearInner<Response>(cache: Cache<Response>, key?: string) {
@@ -178,6 +184,7 @@ export function createSuspenseFetch<Response = any>(
     refresh: (key?: string) => clearInner(cache, key),
     peek: (key: string) => {
       return cache.get(key)?.response
-    }
+    },
+    getCache: () => cache
   }
 }

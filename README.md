@@ -81,13 +81,16 @@ import { pipeToNodeWritable } from 'react-dom/server'
 import App from '../src/App'
 import { DataProvider } from '../src/data'
 import { API_DELAY, ABORT_DELAY } from './delays'
-import { SuspenseFetchProvider } from 'use-suspense-fetch'
+import { SuspenseFetchProvider, renderScriptHtml } from 'use-suspense-fetch'
 
 ...etc
 
+// get some method includes getCache
+const method = createSuspenseFetch()
+
 const { startWriting, abort } = pipeToNodeWritable(
     <DataProvider data={data}>
-      <SuspenseFetchProvider>
+      <SuspenseFetchProvider method={method}>
         <App assets={assets} />
       </SuspenseFetchProvider>
     </DataProvider>,
@@ -103,6 +106,16 @@ const { startWriting, abort } = pipeToNodeWritable(
       onError(x) {
         didError = true
         console.error(x)
+      },
+      onCompleteAll() {
+        // in onCompleteAll get all resolved suspense data
+        const cache = method.getCache()
+        // render cache to htmlStr
+        const str = renderScriptHtml(cache)
+        // return str
+        res.write(str)
+        console.log(str)
+        console.log('------- complete ---------')
       }
     }
   )
@@ -113,11 +126,17 @@ client in `fixtures/ssr/src/index.js` line 15
 ```tsx
 import { hydrateRoot } from 'react-dom'
 import App from './App'
-import { SuspenseFetchProvider } from 'use-suspense-fetch'
+import { SuspenseFetchProvider, getServerInitialData } from 'use-suspense-fetch'
+
+// get cached initialData
+const initialData = getServerInitialData()
+
+console.log('initialData:', initialData)
 
 hydrateRoot(
   document,
-  <SuspenseFetchProvider>
+  // use cache initialData, in order to avoid fetch data again in client.
+  <SuspenseFetchProvider initialData={initialData}>
     <App assets={window.assetManifest} />
   </SuspenseFetchProvider>
 )
@@ -138,6 +157,7 @@ const fakeData = [
 ]
 
 export default function Comments2({ subreddit }) {
+  // if server cache has data, useFetch will use it directly, not to fetch data again.
   const response = useFetch(
     subreddit,
     () =>
@@ -161,13 +181,30 @@ export default function Comments2({ subreddit }) {
 
 ## Api
 
-- **SuspenseProvider**: if you use [support React 18 New Suspense SSR](https://github.com/reactwg/react-18/discussions/37), you have to use it in server render. It will create cache in every render.
+- **SuspenseProvider**: if you use [support React 18 New Suspense SSR](https://github.com/reactwg/react-18/discussions/37), you have to use it in server render.
+
+```ts
+interface SuspenseProviderProps {
+  children?: React.ReactNode
+  // LRU Option
+  options?: Options<string, any>
+  // if method exist, it will use method, else suspenseProvider will create cache in component.
+  // you can use it in server. example => fixtures/ssr/server/render.js
+  method?: ReturnMethod<Response>
+  // get server resolved suspense data, you can use it in client. example => fixtures/ssr/src/index.js
+  initialData?: Record<string, Response>
+}
+```
+
 - **useSuspenseFetch**: you can use it in Component that is inside the Suspense. It will return
   - **fetch(key: string, fn: () => Promise)**: get data from server
   - **refresh(key?: string)**: clear cache
   - **peek(key: string)**: get [key] data
   - **preload(key: string, fn: () => Promise)**: get data early
+  - **getCache()**: get all cache data
 - **useFetch(key: string, fn: () => Promise)**: get data from server. It is equal to fetch.
+- **renderScriptHtml(cache: LRU)**: render script html string, use it in server.
+- **getServerInitialData(key?: string)**: get server cache suspense data, if key not exist it will use default key. only use it in client.
 
 if you use **useSuspenseFetch** or **useFetch**, you have to use **SuspenseProvider** in the top of component.
 

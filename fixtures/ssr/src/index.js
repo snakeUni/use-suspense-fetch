@@ -8,11 +8,15 @@
 
 import { hydrateRoot } from 'react-dom'
 import App from './App'
-import { SuspenseFetchProvider } from 'use-suspense-fetch'
+import { SuspenseFetchProvider, getServerInitialData } from 'use-suspense-fetch'
+
+const initialData = getServerInitialData()
+
+console.log('initialData:', initialData)
 
 hydrateRoot(
   document,
-  <SuspenseFetchProvider>
+  <SuspenseFetchProvider initialData={initialData}>
     <App assets={window.assetManifest} />
   </SuspenseFetchProvider>
 )

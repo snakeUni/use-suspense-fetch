@@ -12,7 +12,11 @@ import { pipeToNodeWritable } from 'react-dom/server'
 import App from '../src/App'
 import { DataProvider } from '../src/data'
 import { API_DELAY, ABORT_DELAY } from './delays'
-import { SuspenseFetchProvider } from 'use-suspense-fetch'
+import {
+  SuspenseFetchProvider,
+  createSuspenseFetch,
+  renderScriptHtml
+} from 'use-suspense-fetch'
 
 // In a real setup, you'd read it from webpack build stats.
 let assets = {
@@ -38,9 +42,10 @@ module.exports = function render(url, res) {
   })
   let didError = false
   const data = createServerData()
+  const method = createSuspenseFetch()
   const { startWriting, abort } = pipeToNodeWritable(
     <DataProvider data={data}>
-      <SuspenseFetchProvider>
+      <SuspenseFetchProvider method={method}>
         <App assets={assets} />
       </SuspenseFetchProvider>
     </DataProvider>,
@@ -56,6 +61,13 @@ module.exports = function render(url, res) {
       onError(x) {
         didError = true
         console.error(x)
+      },
+      onCompleteAll() {
+        const cache = method.getCache()
+        const str = renderScriptHtml(cache)
+        res.write(str)
+        console.log(str)
+        console.log('------- complete ---------')
       }
     }
   )
