@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react'
+import React, { createContext, useContext, useEffect } from 'react'
 import type { Options } from 'lru-cache'
 import serialize from 'serialize-javascript'
 import { isBrowser } from './utils'
@@ -89,14 +89,29 @@ export function useSuspenseFetch<Response = any>(): ReturnMethod<Response> {
   return value as any
 }
 
+interface UseFetchOption {
+  // 重新请求在 mount 的时候
+  refetchOnMount?: boolean
+}
+
 /**
  * 直接返回 fetch 函数，一般只会用到这个
  */
 export function useFetch<Response = any>(
   key: string,
-  fn: PromiseFn<Response>
+  fn: PromiseFn<Response>,
+  { refetchOnMount = true }: UseFetchOption = {}
 ): Response {
-  const { fetch } = useSuspenseFetch<Response>()
+  const { fetch, refresh } = useSuspenseFetch<Response>()
+
+  useEffect(() => {
+    // 是否在组件卸载的时候清空缓存，用于下一次组件 Mount 后重新发起请求
+    return () => {
+      if (refetchOnMount) {
+        refresh(key)
+      }
+    }
+  }, [])  
 
   return fetch(key, fn)
 }

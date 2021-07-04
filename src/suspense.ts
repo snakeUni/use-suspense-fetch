@@ -27,7 +27,6 @@ interface HandleSuspenseFetch<Response> {
   key: string
   preload?: boolean
   lifeSpan?: number
-  ssr?: boolean
 }
 
 const handleSuspenseFetch = <Response>({
@@ -35,14 +34,14 @@ const handleSuspenseFetch = <Response>({
   cache,
   key,
   preload = false,
-  lifeSpan = 0,
-  ssr = false
+  lifeSpan = 0
 }: HandleSuspenseFetch<Response>) => {
   // 使用 str
   const cachedValue = cache.get(key)
 
   if (cachedValue) {
     if (preload) return
+    // TODO 判断是否需要 return error
     if (cachedValue?.error) throw cachedValue.error
     if (cachedValue?.response) return cachedValue.response
     throw cachedValue?.promise
@@ -82,7 +81,6 @@ const handleSuspenseFetch = <Response>({
 
 interface FetchOptions {
   lifeSpan?: number
-  ssr?: boolean
 }
 
 /**
@@ -94,23 +92,18 @@ interface FetchOptions {
 export default function suspenseFetch<Response = any>(
   key: string,
   fn: PromiseFn<Response>,
-  option: FetchOptions = { ssr: false }
+  option: FetchOptions = { }
 ): Response {
   return handleSuspenseFetch({
     promiseFn: fn,
     cache: globalCache as any,
     key: key,
-    lifeSpan: option.lifeSpan || suspenseFetch.lifeSpan,
-    ssr: option.ssr || suspenseFetch.ssr
+    lifeSpan: option.lifeSpan || suspenseFetch.lifeSpan
   }) as Response
 }
 
 // 设置 lifeSpan
 suspenseFetch.lifeSpan = 0
-
-// 设置 ssr, 可以修改此设置，达到 ssr 渲染的目的, 在 ssr 的场景下，服务端应该每次都重新请求
-// 在客户端应该直接跳过
-suspenseFetch.ssr = false
 
 // 导出去的其他方法，用于全局的缓存, 但是如果是 ssr, 那么在客户端调用 refresh 是没有作用的
 export function refresh(key?: string) {
