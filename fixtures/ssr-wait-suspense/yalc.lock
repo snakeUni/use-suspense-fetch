@@ -1,0 +1,9 @@
+{
+  "version": "v1",
+  "packages": {
+    "use-suspense-fetch": {
+      "signature": "55be8c3101ab463009ec68df1a3c6b2a",
+      "file": true
+    }
+  }
+}
