@@ -34,7 +34,7 @@ export function renderScriptHtml<Response = any>(
 
   const cacheRaw = serialize(cacheObj || {}, { isJSON: true })
 
-  return `<script>window.${key}=${cacheRaw}</script>`
+  return `<script async>window.${key}=${cacheRaw}</script>`
 }
 
 // 在客户端使用，初始化数据服务器返回的数据
@@ -105,13 +105,13 @@ export function useFetch<Response = any>(
   const { fetch, refresh } = useSuspenseFetch<Response>()
 
   useEffect(() => {
-    // 是否在组件卸载的时候清空缓存，用于下一次组件 Mount 后重新发起请求
+    // 是否在组件卸载的时候清空缓存，用于下一次组件 Mount 后重新发起请求，并且如果 key 发生变化也要情况之前的缓存
     return () => {
       if (refetchOnMount) {
         refresh(key)
       }
     }
-  }, [])  
+  }, [key])
 
   return fetch(key, fn)
 }

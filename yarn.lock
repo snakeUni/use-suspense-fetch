@@ -2266,24 +2266,24 @@ randombytes@^2.1.0:
   dependencies:
     safe-buffer "^5.1.0"
 
-react-dom@18.0.0-alpha-7ec4c5597:
-  version "18.0.0-alpha-7ec4c5597"
-  resolved "https://registry.nlark.com/react-dom/download/react-dom-18.0.0-alpha-7ec4c5597.tgz#2dbb5f1fde3968001a056c34718ba8b9ce6b53ff"
-  integrity sha1-LbtfH945aAAaBWw0cYuouc5rU/8=
+react-dom@^18.0.0-beta-24dd07bd2-20211208:
+  version "18.0.0-beta-24dd07bd2-20211208"
+  resolved "https://registry.npmmirror.com/react-dom/download/react-dom-18.0.0-beta-24dd07bd2-20211208.tgz#d2fbcc9a080f9983945b4e53db33bba7f7a560f6"
+  integrity sha512-B6pxB3+lI+Tct6WKs+Db5JKSfQUqcfAXz706EMdRlx4qs+PcMpftgicRNO7j6F6zqMMn8bqV1tjHQaqw00UcGg==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
-    scheduler "0.21.0-alpha-7ec4c5597"
+    scheduler "0.21.0-beta-24dd07bd2-20211208"
 
 react-is@^17.0.1:
   version "17.0.2"
   resolved "https://registry.nlark.com/react-is/download/react-is-17.0.2.tgz?cache=0&sync_timestamp=1624897053623&other_urls=https%3A%2F%2Fregistry.nlark.com%2Freact-is%2Fdownload%2Freact-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha1-5pHUqOnHiTZWVVOas3J2Kw77VPA=
 
-react@18.0.0-alpha-7ec4c5597:
-  version "18.0.0-alpha-7ec4c5597"
-  resolved "https://registry.nlark.com/react/download/react-18.0.0-alpha-7ec4c5597.tgz#dd57901c736fd691c5456ec7aa69177cf2ce4ef5"
-  integrity sha1-3VeQHHNv1pHFRW7HqmkXfPLOTvU=
+react@^18.0.0-beta-24dd07bd2-20211208:
+  version "18.0.0-beta-24dd07bd2-20211208"
+  resolved "https://registry.npmmirror.com/react/download/react-18.0.0-beta-24dd07bd2-20211208.tgz#6bfe825f1253390136f1723c03dfea5bae5c5eec"
+  integrity sha512-XyDoCS4UisFJGfiBDnVeOUbJoyAyxwM/YET8hExf9gFLMJX2bRR+v2OvO7k5jhoUamEQ9xCuvoqs9Kf1QfA3Jg==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
@@ -2342,10 +2342,10 @@ saxes@^5.0.1:
   dependencies:
     xmlchars "^2.2.0"
 
-scheduler@0.21.0-alpha-7ec4c5597:
-  version "0.21.0-alpha-7ec4c5597"
-  resolved "https://registry.nlark.com/scheduler/download/scheduler-0.21.0-alpha-7ec4c5597.tgz?cache=0&sync_timestamp=1624897084172&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fscheduler%2Fdownload%2Fscheduler-0.21.0-alpha-7ec4c5597.tgz#4bfbf5d8fbfcf3ddb7b7741d64175e3501f6fa59"
-  integrity sha1-S/v12Pv88923t3QdZBdeNQH2+lk=
+scheduler@0.21.0-beta-24dd07bd2-20211208:
+  version "0.21.0-beta-24dd07bd2-20211208"
+  resolved "https://registry.npmmirror.com/scheduler/download/scheduler-0.21.0-beta-24dd07bd2-20211208.tgz#c2564d3f3b6cef16a58f340435f32f70a03998ed"
+  integrity sha512-h2+U1Cg6w2k3mrURC2769U3L116ZaeMSVRYJdm6R4n99z1XJq5Hus7+JeM5fO0djBKPO3kykilTw/16tp+cOjA==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
