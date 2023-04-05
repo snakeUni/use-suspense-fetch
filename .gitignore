@@ -4,4 +4,5 @@ dist
 .parcel-cache
 build
 .yalc
+yalc.lock
 # use-asset

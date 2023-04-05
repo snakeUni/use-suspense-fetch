@@ -2,7 +2,8 @@
   "version": "v1",
   "packages": {
     "use-suspense-fetch": {
-      "signature": "82bd11206a1ec7c5fd0f870c775772e4",
+      "version": "1.6.0",
+      "signature": "696965857ea08911fef34a1cee10447f",
       "file": true
     }
   }

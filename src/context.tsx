@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect } from 'react'
+import React, { createContext, useContext, useEffect, useRef } from 'react'
 import type { Options } from 'lru-cache'
 import serialize from 'serialize-javascript'
 import { isBrowser } from './utils'
@@ -108,13 +108,17 @@ export function useFetch<Response = any>(
   fn: PromiseFn<Response>,
   { refetchOnMount = true }: UseFetchOption = {}
 ): Response {
+  const oldKey = useRef(key)
   const { fetch, refresh } = useSuspenseFetch<Response>()
 
   useEffect(() => {
     // 是否在组件卸载的时候清空缓存，用于下一次组件 Mount 后重新发起请求，并且如果 key 发生变化也要情况之前的缓存
     return () => {
       if (refetchOnMount) {
-        refresh(key)
+        if (oldKey.current !== key) {
+          refresh(key)
+          oldKey.current = key
+        }
       }
     }
   }, [key])
