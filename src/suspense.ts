@@ -92,7 +92,7 @@ interface FetchOptions {
 export default function suspenseFetch<Response = any>(
   key: string,
   fn: PromiseFn<Response>,
-  option: FetchOptions = { }
+  option: FetchOptions = {}
 ): Response {
   return handleSuspenseFetch({
     promiseFn: fn,
@@ -149,14 +149,16 @@ function clearInner<Response>(cache: Cache<Response>, key?: string) {
  * 创建自己的 LRU 缓存，支持配置选项
  * @param lifeSpan 过期时间
  * @param option 配置选项
+ * @param useGlobalCache 是否使用全局缓存，使用全局缓存的时候，option 将会失效
  * @returns
  */
 export function createSuspenseFetch<Response = any>(
   lifeSpan = 0,
-  option: Options<any, any> = {}
+  option: Options<any, any> = {},
+  useGlobalCache = false
 ): ReturnMethod<Response> {
   const innerOption = { ...defaultOption, ...option }
-  const cache = new LRU(innerOption)
+  const cache = useGlobalCache ? globalCache : new LRU(innerOption)
 
   return {
     fetch: (key: string, fn: PromiseFn<Response>) =>

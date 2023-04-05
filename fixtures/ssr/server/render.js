@@ -42,15 +42,16 @@ module.exports = function render(url, res) {
   })
   let didError = false
   const data = createServerData()
-  const method = createSuspenseFetch()
+  // const method = createSuspenseFetch()
+  let str = 'window.xxx = 11'
   const { pipe, abort } = renderToPipeableStream(
     <DataProvider data={data}>
-      <SuspenseFetchProvider method={method}>
-        <App assets={assets} />
-      </SuspenseFetchProvider>
+      {/* <SuspenseFetchProvider method={method}> */}
+      <App assets={assets} />
+      {/* </SuspenseFetchProvider> */}
     </DataProvider>,
     {
-      onCompleteShell() {
+      onShellReady() {
         // If something errored before we started streaming, we set the error code appropriately.
         res.statusCode = didError ? 500 : 200
         res.setHeader('Content-type', 'text/html')
@@ -61,14 +62,14 @@ module.exports = function render(url, res) {
         didError = true
         console.error(x)
       },
-      onCompleteAll() {
-        const cache = method.getCache()
-        const str = renderScriptHtml(cache)
-        res.write(str)
-        console.log(str)
-        console.log('------- complete ---------')
-      },
-      bootstrapScriptContent: 'xxx'
+      onAllReady() {
+        // const cache = method.getCache()
+        // str = renderScriptHtml(cache)
+        // console.log(str)
+        // console.log('------- complete ---------')
+      }
+      // bootstrapScriptContent: str
+      // bootstrapScripts: ['1.js']
     }
   )
   // Abandon and switch to client rendering if enough time passes.
@@ -94,6 +95,7 @@ function createServerData() {
         setTimeout(() => {
           done = true
           promise = null
+          console.log('请求 in server------')
           resolve()
         }, API_DELAY)
       })

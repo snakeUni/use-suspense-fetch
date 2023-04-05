@@ -63,12 +63,12 @@ function Content() {
             <Comments />
           </Suspense>
         </section>
-        <section className="comments">
+        {/* <section className="comments">
           <h2>Comments for suspense fetch</h2>
           <Suspense fallback={<Spinner />}>
             <Comments2 subreddit="react" />
           </Suspense>
-        </section>
+        </section> */}
         {/* <section className="comments">
           <h2>Comments for react fetch</h2>
           <Suspense fallback={<Spinner />}>

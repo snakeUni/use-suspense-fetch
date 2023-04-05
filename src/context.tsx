@@ -83,8 +83,14 @@ export function SuspenseFetchProvider<Response = any>({
   return <context.Provider value={innerMethod}>{children}</context.Provider>
 }
 
+const suspenseFetch = createSuspenseFetch(0, {}, true)
+
+/**
+ * 如果使用 Provider 则支持自定义的缓存，否则使用全局缓存
+ * @returns
+ */
 export function useSuspenseFetch<Response = any>(): ReturnMethod<Response> {
-  const value = useContext(context)
+  const value = useContext(context) || suspenseFetch
 
   return value as any
 }

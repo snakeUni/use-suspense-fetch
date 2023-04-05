@@ -10,6 +10,7 @@ import { useData } from './data'
 
 export default function Comments() {
   const comments = useData()
+  console.log('in server---', comments)
   return (
     <>
       {comments.map((comment, i) => (

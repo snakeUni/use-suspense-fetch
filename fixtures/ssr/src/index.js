@@ -6,7 +6,7 @@
  *
  */
 
-import { hydrateRoot } from 'react-dom'
+import { hydrateRoot } from 'react-dom/client'
 import App from './App'
 import { SuspenseFetchProvider, getServerInitialData } from 'use-suspense-fetch'
 
